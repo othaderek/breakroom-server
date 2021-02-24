@@ -18,6 +18,10 @@ app.get('/', (req, res) => {
     res.send('Connecting to chat room...')
 });
 
+app.get('/:room', (req, res) => {
+    res.render('room', {roomId: req.params.room})
+})
+
 io.on("connection", socket => {
     console.log("socket connected")
     socket.on('mounted', data => { 
