@@ -1,5 +1,4 @@
 const express = require("express");
-const cors = require("cors");
 const socketIO = require("socket.io");
 const app = express();
 const http = require('http');
@@ -8,6 +7,9 @@ const { v4: uuidV4 } = require('uuid');
 const expressVue = require("express-vue");
 
 const port = 5000;
+
+var roomNumber = 1;
+// var roomId;
 
 console.log(server.getMaxListeners());
 
@@ -31,16 +33,24 @@ app.get('/', (req, res) => {
 
 io.on("connection", socket => {
     console.log("socket connecting..")
+    socket.join(`room-1`);
+    // console.log(`Joined room-${roomId}`);
+    // console.log(io);
+    // console.log('Adapter: ', io.sockets.adapter);
+    // let rooms = Array.from(io.sockets.adapter.rooms.keys());
+    // let firstRoom = rooms[0];
+    // console.log('First room: ', firstRoom);
+    // roomId = firstRoom;
+    // if (roomId){
+    //     socket.join(roomId)
+    // }
 
-    socket.on('mounted', data => { 
-        console.log('data: ', data);
-        console.log('connected clients: ', io.sockets.adapter.rooms);
-        io.emit('test');
-    });
-
-    socket.on('join-room', (roomId, userId) => {
-        console.log(roomId, userId);
-    })
+    // // console.log('Rooms?', socket.rooms);
+    // // console.log('Socket ID', socket.id)
+    let roomsObj = Object.fromEntries(io.sockets.adapter.rooms.entries())
+    let roomCount = Array.from(io.sockets.adapter.rooms.keys()).length;
+    console.log('Rooms: ', roomsObj);
+    console.log('Count:', roomCount);
 
 });
 
